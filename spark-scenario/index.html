@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark Scenario</title>
+<style>
+  :root{
+    --bg:#120c1a; --surface:#1c1428; --surface2:#241a34;
+    --text:#f3ecff; --muted:#a89bc4; --accent:#ff5f96; --accent2:#ffb37a;
+    --good:#5eead4; --bad:#5a4b73;
+    --radius:18px; --dur:220ms; --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(circle at 20% -10%,#301f47,var(--bg) 55%);
+    color:var(--text);font-family:'Avenir Next',ui-sans-serif,system-ui,sans-serif;
+    min-height:100vh;display:flex;justify-content:center;padding:2.5rem 1.2rem}
+  main{width:100%;max-width:560px}
+  header{text-align:center;margin-bottom:1.8rem}
+  h1{font-size:clamp(1.6rem,5vw,2.2rem);margin:0 0 .3rem;letter-spacing:-.02em}
+  header p{color:var(--muted);margin:0;font-size:.95rem}
+  .dots{display:flex;gap:.4rem;justify-content:center;margin:1.2rem 0}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--surface2);transition:transform var(--dur) var(--ease),background var(--dur)}
+  .dot.done{background:var(--good)}
+  .dot.active{background:var(--accent);transform:scale(1.4)}
+  .card{background:linear-gradient(160deg,var(--surface),var(--surface2));border-radius:var(--radius);
+    padding:1.6rem;box-shadow:0 20px 50px -20px rgba(0,0,0,.6);border:1px solid #ffffff12;
+    animation:rise var(--dur) var(--ease)}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .scenario{font-size:1.15rem;line-height:1.45;margin:0 0 1.3rem;font-weight:600}
+  .opt{display:block;width:100%;text-align:left;background:#00000030;border:1px solid #ffffff14;
+    color:var(--text);padding:.85rem 1rem;border-radius:12px;margin-bottom:.6rem;font-size:.95rem;
+    cursor:pointer;transition:transform var(--dur) var(--ease),background var(--dur),border-color var(--dur)}
+  .opt:hover{background:#ffffff10;border-color:var(--accent);transform:translateX(4px)}
+  .opt:active{transform:scale(.98)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.9rem;margin-top:1rem}
+  .profile{background:var(--surface);border:1px solid #ffffff14;border-radius:16px;padding:1.1rem .8rem;
+    text-align:center;cursor:pointer;transition:transform var(--dur) var(--ease),border-color var(--dur)}
+  .profile:hover{transform:translateY(-4px);border-color:var(--accent2)}
+  .avatar{font-size:2rem;line-height:1;margin-bottom:.4rem}
+  .pname{font-weight:700;font-size:.95rem}
+  .ptag{color:var(--muted);font-size:.75rem;margin-top:.2rem}
+  .backBtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;margin-bottom:1rem;padding:0}
+  .backBtn:hover{color:var(--accent2)}
+  .matchHead{text-align:center;margin-bottom:1.2rem}
+  .matchPct{font-size:2.6rem;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .row{display:flex;gap:.7rem;padding:.8rem 0;border-bottom:1px solid #ffffff10;align-items:flex-start}
+  .row:last-child{border-bottom:none}
+  .mark{flex-shrink:0;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:.8rem;font-weight:800;margin-top:.15rem}
+  .mark.yes{background:var(--good);color:#08201c}
+  .mark.no{background:var(--bad);color:#f3ecff}
+  .rowBody small{display:block;color:var(--muted);margin-bottom:.15rem}
+  .rowBody .you{color:var(--accent2)}
+  .rowBody .them{color:var(--text)}
+  footer{text-align:center;color:var(--muted);font-size:.75rem;margin-top:1.6rem}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Spark Scenario</h1>
+    <p>See who handles moments like you do.</p>
+  </header>
+  <div id="app"></div>
+  <footer>5 moments · no accounts · nothing saved</footer>
+</main>
+<script>
+const scenarios = [
+  { text:"You're arguing and your partner suddenly goes quiet mid-sentence.",
+    options:["Push for them to keep talking","Give them space, wait it out","Ask gently what shut them down","Get quiet too, mirror it"] },
+  { text:"You made plans, but your partner cancels last minute — again.",
+    options:["Say it's fine, let it go","Ask what's really going on","Feel hurt, pull back a little","Make new plans without them"] },
+  { text:"Your partner gets great news before telling anyone — you hear it third-hand.",
+    options:["Feel a sting, bring it up later","Shrug it off, not a big deal","Ask directly why you weren't first","Celebrate anyway, timing doesn't matter"] },
+  { text:"It's 1am, you're both exhausted, and a small thing turns into a real fight.",
+    options:["Push to resolve it right now","Call a truce, revisit tomorrow","Say something you'll regret","Go quiet, give it a night"] },
+  { text:"Your partner surprises you with a gift that's slightly... off.",
+    options:["Fake enthusiasm, spare their feelings","Be honest but gentle about it","Genuinely love it, effort is everything","Joke about it to soften the moment"] },
+];
+const profiles = [
+  { name:"Maya", emoji:"🌙", answers:[1,2,0,3,1] },
+  { name:"Theo", emoji:"🔥", answers:[0,2,1,3,0] },
+  { name:"Ren",  emoji:"🌿", answers:[1,1,0,3,2] },
+  { name:"Ivy",  emoji:"⚡", answers:[2,0,3,1,1] },
+  { name:"Sol",  emoji:"🌊", answers:[1,1,0,3,1] },
+  { name:"Nova", emoji:"✨", answers:[3,2,1,0,2] },
+];
+
+let step = 0;
+const userAnswers = [];
+const app = document.getElementById('app');
+
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function renderQuiz(){
+  const s = scenarios[step];
+  const dots = scenarios.map((_,i)=>{
+    const cls = i<step?'dot done':(i===step?'dot active':'dot');
+    return `<span class="${cls}"></span>`;
+  }).join('');
+  app.innerHTML = `
+    <div class="dots">${dots}</div>
+    <div class="card" id="qcard">
+      <p class="scenario">${esc(s.text)}</p>
+      ${s.options.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}
+    </div>`;
+  app.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      userAnswers.push(Number(btn.dataset.i));
+      step++;
+      step < scenarios.length ? renderQuiz() : renderResults();
+    });
+  });
+}
+
+function renderResults(){
+  app.innerHTML = `
+    <p style="text-align:center;color:var(--muted);margin-bottom:1rem">
+      Your answers are locked in. Tap someone to reveal your Spark Scenario.
+    </p>
+    <div class="grid" id="grid"></div>`;
+  const grid = document.getElementById('grid');
+  profiles.forEach((p,idx)=>{
+    const matches = p.answers.filter((a,i)=>a===userAnswers[i]).length;
+    const div = document.createElement('div');
+    div.className = 'profile';
+    div.innerHTML = `<div class="avatar">${p.emoji}</div><div class="pname">${esc(p.name)}</div><div class="ptag">${matches}/5 shared instincts</div>`;
+    div.addEventListener('click', ()=>renderDetail(idx));
+    grid.appendChild(div);
+  });
+}
+
+function renderDetail(idx){
+  const p = profiles[idx];
+  const matches = p.answers.filter((a,i)=>a===userAnswers[i]).length;
+  const pct = Math.round((matches/scenarios.length)*100);
+  const rows = scenarios.map((s,i)=>{
+    const hit = p.answers[i]===userAnswers[i];
+    return `<div class="row">
+      <div class="mark ${hit?'yes':'no'}">${hit?'✓':'✕'}</div>
+      <div class="rowBody">
+        <small>${esc(s.text)}</small>
+        <span class="you">You: ${esc(s.options[userAnswers[i]])}</span><br>
+        <span class="them">${esc(p.name)}: ${esc(s.options[p.answers[i]])}</span>
+      </div>
+    </div>`;
+  }).join('');
+  app.innerHTML = `
+    <button class="backBtn" id="back">← all profiles</button>
+    <div class="matchHead">
+      <div class="avatar" style="font-size:2.6rem">${p.emoji}</div>
+      <div class="matchPct">${pct}%</div>
+      <div style="color:var(--muted)">matched instincts with ${esc(p.name)}</div>
+    </div>
+    <div class="card">${rows}</div>`;
+  document.getElementById('back').addEventListener('click', renderResults);
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
