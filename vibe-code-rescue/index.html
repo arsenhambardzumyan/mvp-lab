@@ -2,68 +2,74 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vibe-Code Rescue: $99 written audit of your AI-built app, in 48 hours</title>
-<meta name="description" content="A $99 written audit of your Cursor, Lovable, Bolt or Copilot-built codebase: top 10 bugs ranked by risk, security and config red flags, and a one-page fix plan within 48 hours.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe-Code Rescue: written code audit in 48h for $99, fixes for $290</title>
+<meta name="description" content="Built your app with an AI coding tool? I review the repo read-only and send a risk-ranked audit with a one-page fix plan in 48 hours. $99. Optional fixes: $290.">
 <style>
-:root{--ink:#111;--muted:#555;--accent:#ff4d1c;--line:#e6e6e6;--bg:#fafaf8}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 -apple-system,Segoe UI,Roboto,sans-serif}
-main{max-width:720px;margin:0 auto;padding:56px 20px 72px}
-h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.15;margin:0 0 16px;letter-spacing:-.02em}
-h2{font-size:1.2rem;margin:40px 0 10px}
-p.sub{font-size:1.15rem;color:var(--muted);margin:0 0 28px}
-.cta{display:inline-block;background:var(--accent);color:#fff;font-weight:700;text-decoration:none;padding:14px 26px;border-radius:6px}
-.cta:hover,.cta:focus{background:#d93d10;outline:3px solid #111;outline-offset:2px}
-ul,ol{padding-left:1.2em}
-li{margin:.45em 0}
-.fix{border-left:4px solid var(--accent);padding:4px 0 4px 16px;margin:12px 0}
-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+  :root{--bg:#faf8f4;--ink:#17181c;--muted:#5d6068;--line:#e3ded3;--accent:#c2410c;--panel:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Georgia,"Times New Roman",serif}
+  .wrap{max-width:720px;margin:0 auto;padding:0 22px}
+  header{padding:56px 0 36px;border-bottom:1px solid var(--line)}
+  .tag{font:600 13px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:clamp(32px,6vw,48px);line-height:1.12;margin:14px 0 18px;letter-spacing:-.02em}
+  h2{font-size:24px;margin:0 0 12px;letter-spacing:-.01em}
+  p{margin:0 0 14px}
+  .lead{font-size:19px;color:var(--muted)}
+  .cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font:600 16px/1 system-ui,sans-serif;padding:16px 26px;border-radius:6px;margin-top:8px}
+  .cta:hover,.cta:focus-visible{background:#9a3412;outline:3px solid #fed7aa}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  ul,ol{padding-left:22px;margin:0 0 14px}
+  li{margin-bottom:8px}
+  footer{padding:30px 0 60px;color:var(--muted);font:14px/1.5 system-ui,sans-serif}
 </style>
 </head>
 <body>
-<main>
+<main class="wrap">
 <header>
-<h1>Your AI-built app works in the demo. Find out what breaks in production.</h1>
-<p class="sub">A $99 written audit of your Cursor, Lovable, Bolt or Copilot-built codebase, delivered in 48 hours. If you want the fixes done, the fix is a flat $290 and your $99 is credited.</p>
-<a class="cta" href="https://itfabers.lemonsqueezy.com/checkout/buy/fe0422dd-6cb0-4a80-a23d-aa69cbca23aa">Order the $99 audit</a>
+<div class="tag">For apps built with AI coding tools</div>
+<h1>Before you launch it, have a person read the code.</h1>
+<p class="lead">Send me read-only access to your repo. In 48 hours you get a written audit: the ten most serious problems ranked by risk, a security and config checklist, and a one-page fix plan.</p>
 </header>
-
-<section aria-labelledby="get">
-<h2 id="get">What you get in the audit</h2>
+<section>
+<h2>Two steps</h2>
 <ul>
-<li>The top 10 bugs, ranked by risk to your users and your business</li>
-<li>Security and config red flags: exposed keys, missing auth checks, open database rules, unsafe defaults</li>
-<li>A one-page fix plan in plain English, ordered by what to do first</li>
+<li><strong>Audit, $99.</strong> Written report, delivered within 48 hours of a complete intake. <a class="cta" href="https://itfabers.lemonsqueezy.com/checkout/buy/fe0422dd-6cb0-4a80-a23d-aa69cbca23aa">Order the audit</a></li>
+<li><strong>Fix Milestone, $290.</strong> Optional, after the audit: I implement the items the report marks "fix before launch", up to a scope cap written in your report. Anything beyond the cap is quoted separately. <a class="cta" href="https://itfabers.lemonsqueezy.com/checkout/buy/174ca2c7-5fd9-470e-8789-2c107b37489c">Order the fix</a></li>
 </ul>
 </section>
-
-<section aria-labelledby="how">
-<h2 id="how">How it works</h2>
+<section>
+<h2>What the audit contains</h2>
+<ul>
+<li>Up to 10 issues ranked by severity and likelihood. Each has the file and line, the quoted code, the impact in plain words, a concrete fix and an effort estimate. I do not pad the list: if I find fewer, you get fewer.</li>
+<li>A checklist marked pass / flag / not applicable: secrets in the repo, exposed config, missing auth checks, input handling, CORS and rate limiting, webhook signature checks, debug mode, dependencies with known CVEs, silent error handling.</li>
+<li>A one-page fix plan: what to fix before launch, this month, or later.</li>
+<li>A list of what I ran (for example <code>npm audit</code>) with the result, and a list of what I could not verify.</li>
+</ul>
+</section>
+<section>
+<h2>How it works</h2>
 <ol>
-<li>Pay $99 at checkout. I contact you by the email on your order to arrange read-only access to the repo.</li>
-<li>I read the code and write the audit.</li>
-<li>You get the written report within 48 hours.</li>
+<li>You pay on LemonSqueezy.</li>
+<li>You send read-only access (a read-only GitHub collaborator, a fine-grained token with contents read, or a zip), a three-line description of the app, and the one to three things that worry you most.</li>
+<li>The 48 hours start when that intake is complete, not at payment.</li>
+<li>You receive the report as PDF or Markdown.</li>
 </ol>
 </section>
-
-<section aria-labelledby="fix">
-<h2 id="fix">The fix</h2>
-<div class="fix">If you want the issues fixed, the fix is a fixed $290. The $99 you already paid is credited against it, so the fix costs you $191 more.</div>
+<section>
+<h2>Limits, plainly</h2>
+<ul>
+<li>It is a static review of one commit. It is not a penetration test, not a compliance certificate, and not a promise that no bugs remain.</li>
+<li>Do not send <code>.env</code> files or keys. If I find a leaked secret, I report where it is, never its value, and you rotate it.</li>
+<li>You must own the code or have the right to share it.</li>
+<li>Best fit: JavaScript/TypeScript and Python projects, up to about 50k lines and 3 services. If your repo is outside that, or I cannot get read-only access, I will tell you and refund the order.</li>
+<li>Only one audit runs at a time. If I am busy when you order, I will quote a longer turnaround before starting.</li>
+</ul>
 </section>
-
-<section aria-labelledby="who">
-<h2 id="who">Who this is for</h2>
-<p>Founders and solo builders who shipped something with an AI coding tool and want a developer to read it before real users or real money touch it.</p>
+<section>
+<h2>Who I am</h2>
+<p>I am Arsen, an independent developer in Yerevan. This is a new service and I have no client portfolio or testimonials to show yet. That is why the scope, the deliverable and the limits are written out above, and why the price is low.</p>
 </section>
-
-<section aria-labelledby="me">
-<h2 id="me">Who I am</h2>
-<p>I'm Arsen Hambardzumyan, an independent developer in Yerevan. This audit is new and I have no client testimonials to show you. What I can show you is the report itself: a ranked list, specific to your code, that you can hand to any developer, including one who isn't me.</p>
-<p><a class="cta" href="https://itfabers.lemonsqueezy.com/checkout/buy/fe0422dd-6cb0-4a80-a23d-aa69cbca23aa">Order the $99 audit</a></p>
-</section>
-
-<footer>ITFabers · Arsen Hambardzumyan, Yerevan</footer>
 </main>
 </body>
 </html>
