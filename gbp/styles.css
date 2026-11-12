@@ -51,6 +51,19 @@ li { margin-bottom: 8px; }
   margin-top: 8px;
 }
 .cta:hover, .cta:focus-visible { background: var(--accent-dark); outline: 3px solid #fed7aa; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.cta-secondary {
+  display: inline-block;
+  background: transparent;
+  color: var(--accent-dark);
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  font: 600 15px/1 system-ui, sans-serif;
+  padding: 15px 18px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+.cta-secondary:hover, .cta-secondary:focus-visible { background: #fff1e8; outline: 3px solid #fed7aa; }
 .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0 10px; }
 .card {
   background: var(--panel);

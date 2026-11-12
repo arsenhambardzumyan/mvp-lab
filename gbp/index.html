@@ -148,9 +148,12 @@
     <label for="notes">Anything else? (optional)</label>
     <textarea id="notes" name="notes" rows="3"></textarea>
   </div>
-  <button class="cta" type="submit">Request the free audit</button>
+  <div class="actions">
+    <button class="cta" type="submit">Request the free audit</button>
+    <button class="cta-secondary" type="button" id="copy-request">Copy request instead</button>
+  </div>
   <p id="form-status" class="status" role="status" aria-live="polite"></p>
-  <p class="small">This form opens your email app with the request filled in. If it does not open, email <a href="mailto:arsen.hambardzumyan26@gmail.com">arsen.hambardzumyan26@gmail.com</a> directly.</p>
+  <p class="small">This form opens your email app with the request filled in. If it does not open, use the copy button or email <a href="mailto:arsen.hambardzumyan26@gmail.com">arsen.hambardzumyan26@gmail.com</a> directly. No account access is requested.</p>
 </form>
 </section>
 
@@ -223,46 +226,82 @@
 (function () {
   var form = document.getElementById('audit-form');
   var status = document.getElementById('form-status');
+  var copyButton = document.getElementById('copy-request');
   if (!form || !status) return;
 
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    if (!form.reportValidity()) return;
+  function value(data, name) {
+    return (data.get(name) || '').toString().trim();
+  }
 
+  function collect() {
     var data = new FormData(form);
-    function value(name) {
-      return (data.get(name) || '').toString().trim();
-    }
-
-    var business = value('business');
+    var business = value(data, 'business');
+    var replyEmail = value(data, 'email');
     var subject = 'Free GBP audit request — ' + (business || 'my business');
     var lines = [
       'Business name: ' + (business || '—'),
-      'Your name: ' + (value('person') || '—'),
-      'Reply email: ' + (value('email') || '—'),
-      'Google Business Profile link: ' + (value('profile') || '—'),
-      'What to look at: ' + (value('focus') || 'Everything'),
-      'Notes: ' + (value('notes') || '—')
+      'Your name: ' + (value(data, 'person') || '—'),
+      'Reply email: ' + (replyEmail || '—'),
+      'Google Business Profile link: ' + (value(data, 'profile') || '—'),
+      'What to look at: ' + (value(data, 'focus') || 'Everything'),
+      'Notes: ' + (value(data, 'notes') || '—')
     ];
-
     try {
       localStorage.setItem('gbp_audit_last', JSON.stringify({
         business: business,
-        email: value('email'),
-        profile: value('profile'),
-        focus: value('focus'),
+        email: replyEmail,
+        profile: value(data, 'profile'),
+        focus: value(data, 'focus'),
         at: new Date().toISOString()
       }));
     } catch (err) {
       /* storage can be disabled; the email request still works */
     }
+    return { subject: subject, body: lines.join('\n'), replyEmail: replyEmail };
+  }
 
+  function say(message) {
     status.className = 'status ok';
-    status.textContent = 'Opening your email app with the request filled in. Send the message and I will reply to ' + (value('email') || 'your email') + '.';
+    status.textContent = message;
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    var request = collect();
+    say('Request ready in your email app. Send it and I will reply to ' + (request.replyEmail || 'your email') + '.');
     window.location.href = 'mailto:arsen.hambardzumyan26@gmail.com'
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body=' + encodeURIComponent(lines.join('\n'));
+      + '?subject=' + encodeURIComponent(request.subject)
+      + '&body=' + encodeURIComponent(request.body);
   });
+
+  if (copyButton) {
+    copyButton.addEventListener('click', function () {
+      if (!form.reportValidity()) return;
+      var request = collect();
+      var text = 'To: arsen.hambardzumyan26@gmail.com\nSubject: ' + request.subject + '\n\n' + request.body;
+      function done() {
+        say('Request copied. Paste it into an email to arsen.hambardzumyan26@gmail.com and send it.');
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+      function fallback() {
+        var area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        try { document.execCommand('copy'); } catch (err) { /* ignore */ }
+        document.body.removeChild(area);
+        done();
+      }
+    });
+  }
 })();
 </script>
 </body>
